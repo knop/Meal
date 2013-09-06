@@ -20,30 +20,44 @@ public class MainActivity extends Activity implements SensorEventListener{
 	private int _shakeCount = 0;
 	private SensorManager _sensorManager;
 	private TextView _textView;
+	private TextView _tvMenuName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		_textView = (TextView)findViewById(R.id.text_view);
+		_tvMenuName = (TextView)findViewById(R.id.text_view_menu);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		_sensorManager.unregisterListener(this);
+		unregisterSensor();
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		TFMenu menu = MealManager.instance().currentMenu();
+		_tvMenuName.setText(menu.getName());
+		registerSensor();
+	}
+	
+	private void registerSensor() {
+		if (_sensorManager == null)
+			_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		Sensor acceleromererSensor = _sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		_sensorManager.registerListener(this, acceleromererSensor, SensorManager.SENSOR_DELAY_NORMAL);
 		_shakeCount = 0;
 	}
 	
+	private void unregisterSensor() {
+		_sensorManager.unregisterListener(this);
+	}
+	
 	public void onClickClear(View view) {
+		registerSensor();
 		clearText();
 	}
 	
@@ -53,6 +67,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	}
 	
 	private void randomMeal() {
+		unregisterSensor();
 		TFMenu menu = MealManager.instance().currentMenu();
 		if (menu == null || menu.getMeals().size() <= 0)
 			Toast.makeText(this, "请先添加就餐地址!", Toast.LENGTH_SHORT).show();
@@ -69,7 +84,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	}
 	
 	private void updateMealWithIndex(int index) {
-		Meal meal = MealManager.instance().currentMenu().getMeals().get(index);
+		TFMeal meal = MealManager.instance().currentMenu().getMeals().get(index);
 		_textView.setText(meal.toString());
 	}
 	

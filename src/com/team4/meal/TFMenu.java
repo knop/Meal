@@ -6,13 +6,13 @@ import android.util.Log;
 
 public class TFMenu {
 
-	private ArrayList<Meal> _meals;
+	private ArrayList<TFMeal> _meals;
 	private String _name;
 	private boolean _isSelected;
 
 	public TFMenu(String name) {
 		setName(name);
-		_meals = new ArrayList<Meal>();
+		_meals = new ArrayList<TFMeal>();
 	}
 	
 	public String getName() {
@@ -23,19 +23,19 @@ public class TFMenu {
 		_name = name;
 	}
 	
-	public ArrayList<Meal> getMeals() {
+	public ArrayList<TFMeal> getMeals() {
 		return _meals;
 	}
 
-	public void setMeals(ArrayList<Meal> meals) {
+	public void setMeals(ArrayList<TFMeal> meals) {
 		_meals = meals;
 	}	
 	
-	public void addMeal(Meal meal) {
+	public void addMeal(TFMeal meal) {
 		_meals.add(meal);
 	}
 	
-	public void removeMeal(Meal meal) {
+	public void removeMeal(TFMeal meal) {
 		_meals.remove(meal);
 		MealManager.instance().updateMenu(this);
 	}
@@ -45,7 +45,7 @@ public class TFMenu {
 			String[] meals = mealString.split(";");
 			for (String s : meals) {
 				Log.v("[Xiaohui]", s);
-				addMeal(new Meal(s));
+				addMeal(new TFMeal(s));
 			}
 		}
 	}
@@ -54,7 +54,7 @@ public class TFMenu {
 		String mealString = "";
 		int mealSize = _meals.size();
 		for (int i=0; i<mealSize; i++) {
-			Meal meal = _meals.get(i);
+			TFMeal meal = _meals.get(i);
 			mealString += meal.toString() + ";";
 		}
 		

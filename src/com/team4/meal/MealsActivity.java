@@ -16,7 +16,7 @@ public class MealsActivity extends Activity {
 	
 	private ListView _listView;
 	private EditText _editText;
-	private ArrayAdapter<Meal> _adapter;
+	private ArrayAdapter<TFMeal> _adapter;
 	private TFMenu _menu;
 	
 	@Override
@@ -31,7 +31,7 @@ public class MealsActivity extends Activity {
 		
 		_menu = MealManager.instance().getMenus().get(menuIndex);
 		
-		_adapter = new ArrayAdapter<Meal>(this, 
+		_adapter = new ArrayAdapter<TFMeal>(this, 
 				android.R.layout.simple_expandable_list_item_1, 
 				_menu.getMeals());
 		_listView.setAdapter(_adapter);
@@ -41,7 +41,7 @@ public class MealsActivity extends Activity {
 	public void onClickAdd(View view) {
 		String text = _editText.getText().toString();
 		if (text.length() > 0) {
-			Meal meal = new Meal(text);
+			TFMeal meal = new TFMeal(text);
 			_adapter.add(meal);
 			MealManager.instance().updateMenu(_menu);
 			_editText.getText().clear();
@@ -53,7 +53,7 @@ public class MealsActivity extends Activity {
     	switch(item.getItemId()){
     	case 1:
     		 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-    		 Meal meal = _menu.getMeals().get(info.position);
+    		 TFMeal meal = _menu.getMeals().get(info.position);
     		 _adapter.remove(meal);
     		 MealManager.instance().updateMenu(_menu);
     		 break; 

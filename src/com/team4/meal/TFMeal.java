@@ -1,10 +1,10 @@
 package com.team4.meal;
 
-public class Meal {
+public class TFMeal {
 
 	private String _name;
 
-	public Meal(String name) {
+	public TFMeal(String name) {
 		setName(name);
 	}
 	

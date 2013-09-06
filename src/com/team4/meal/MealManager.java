@@ -11,11 +11,13 @@ import android.util.Log;
 public class MealManager {
 
 	private static final String PREFS_NAME = "MyPrefsFile";
+	private static final String CONFIG_NAME = "TFConfig";
 	
 	private static MealManager sInstance;
 	
 	private Context _context;
-	SharedPreferences _settings;
+	private SharedPreferences _settings;
+	private SharedPreferences _config;
 	private ArrayList<TFMenu> _menus;
 	private TFMenu _currentMenu;
 	
@@ -35,6 +37,7 @@ public class MealManager {
 	public void init(Context context) {
 		_context = context;
 		_settings = _context.getSharedPreferences(PREFS_NAME, 0);
+		_config = _context.getSharedPreferences(CONFIG_NAME, 0);
 		restore();
 	}
 	
@@ -69,6 +72,11 @@ public class MealManager {
 			menu.select(index == i);
 		}
 		_currentMenu = _menus.get(index);
+
+		SharedPreferences.Editor editor = _config.edit();
+		Log.v("[Xiaohui]", "current_index:"+index);
+		editor.putInt("current_index", index);
+		editor.commit();
 	}
 	
 	public TFMenu currentMenu() {
@@ -81,8 +89,8 @@ public class MealManager {
 			TFMenu menu = new TFMenu(entry.getKey());
 			menu.restoreMeals(entry.getValue().toString());
 			_menus.add(menu);        
-		 }
-		selectedMenu(0);
+		}
+		selectedMenu(_config.getInt("current_index", 0));
 	}
 	
 	public void save() {
