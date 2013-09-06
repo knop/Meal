@@ -1,0 +1,11 @@
+# osx noise
+.DS_Store
+profile
+
+# android noise
+bin/*
+gen/*
+
+# svn & cvs
+.svn
+CVS
