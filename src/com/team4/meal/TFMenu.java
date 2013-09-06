@@ -2,10 +2,13 @@ package com.team4.meal;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class TFMenu {
 
 	private ArrayList<Meal> _meals;
 	private String _name;
+	private boolean _isSelected;
 
 	public TFMenu(String name) {
 		setName(name);
@@ -34,6 +37,17 @@ public class TFMenu {
 	
 	public void removeMeal(Meal meal) {
 		_meals.remove(meal);
+		MealManager.instance().updateMenu(this);
+	}
+	
+	public void restoreMeals(String mealString) {
+		if (mealString.length() > 0) {
+			String[] meals = mealString.split(";");
+			for (String s : meals) {
+				Log.v("[Xiaohui]", s);
+				addMeal(new Meal(s));
+			}
+		}
 	}
 	
 	public String getMealString() {
@@ -47,7 +61,13 @@ public class TFMenu {
 		return mealString;
 	}
 	
+	public void select(boolean selected) {
+		_isSelected = selected;
+	}
+	
 	public String toString() {
+		if (_isSelected)
+			return "*"+_name;
 		return _name;
 	}
 	

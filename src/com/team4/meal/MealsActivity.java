@@ -43,7 +43,7 @@ public class MealsActivity extends Activity {
 		if (text.length() > 0) {
 			Meal meal = new Meal(text);
 			_adapter.add(meal);
-			MealManager.instance().save(this);
+			MealManager.instance().updateMenu(_menu);
 			_editText.getText().clear();
 		}
 	}
@@ -55,7 +55,7 @@ public class MealsActivity extends Activity {
     		 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
     		 Meal meal = _menu.getMeals().get(info.position);
     		 _adapter.remove(meal);
-    		 MealManager.instance().save(this);
+    		 MealManager.instance().updateMenu(_menu);
     		 break; 
     	}
     	

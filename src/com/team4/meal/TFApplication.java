@@ -9,7 +9,7 @@ public class TFApplication extends Application {
         // TODO Auto-generated method stub 
         super.onCreate();
         
-        MealManager.instance().restore(this);
+        MealManager.instance().init(this);
     }    
     
     

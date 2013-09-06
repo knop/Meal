@@ -16,6 +16,9 @@ import android.widget.ListView;
 
 public class MenusActivity extends Activity implements OnItemClickListener{
 	
+	private final static int ITEM_SELECT = 1;
+	private final static int ITEM_DELETE = 2;
+	
 	private ListView _listView;
 	private EditText _editText;
 	private ArrayAdapter<TFMenu> _adapter;
@@ -40,20 +43,25 @@ public class MenusActivity extends Activity implements OnItemClickListener{
 		String text = _editText.getText().toString();
 		if (text.length() > 0) {
 			TFMenu menu = new TFMenu(text);
-			_adapter.add(menu);
-			MealManager.instance().save(this);
+			MealManager.instance().addMenu(menu);
+			_adapter.notifyDataSetChanged();
 			_editText.getText().clear();
 		}
 	}
 	
     // 长按菜单响应函数
     public boolean onContextItemSelected(MenuItem item) {
+    	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    	int index = info.position;
     	switch(item.getItemId()){
-    	case 1:
-    		 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-    		 TFMenu menu = MealManager.instance().getMenus().get(info.position);
-    		 _adapter.remove(menu);
-    		 MealManager.instance().save(this);
+    	case ITEM_SELECT:
+    		MealManager.instance().selectedMenu(index);
+    		_adapter.notifyDataSetChanged();
+    		break;
+    	case ITEM_DELETE:
+    		 TFMenu menu = MealManager.instance().getMenus().get(index);
+    		 MealManager.instance().removeMenu(menu);
+    		 _adapter.notifyDataSetChanged();
     		 break; 
     	}
     	
@@ -61,7 +69,8 @@ public class MenusActivity extends Activity implements OnItemClickListener{
     }
     
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        menu.add(Menu.NONE, 1, Menu.NONE, "删除");
+    	menu.add(Menu.NONE, ITEM_SELECT, Menu.NONE, "选择");
+        menu.add(Menu.NONE, ITEM_DELETE, Menu.NONE, "删除");
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 

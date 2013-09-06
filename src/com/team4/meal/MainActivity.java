@@ -53,14 +53,15 @@ public class MainActivity extends Activity implements SensorEventListener{
 	}
 	
 	private void randomMeal() {
-		int count = MealManager.instance().currentMenu().getMeals().size();
+		TFMenu menu = MealManager.instance().currentMenu();
+		if (menu == null || menu.getMeals().size() <= 0)
+			Toast.makeText(this, "请先添加就餐地址!", Toast.LENGTH_SHORT).show();
+		int count = menu.getMeals().size();
 		if (count > 0) {
 			Random random = new Random();
 			int n = random.nextInt(count);
 			updateMealWithIndex(n);
-		} else {
-			Toast.makeText(this, "请先添加就餐地址!", Toast.LENGTH_SHORT).show();
-		}		
+		}
 	}
 	
 	private void clearText() {
