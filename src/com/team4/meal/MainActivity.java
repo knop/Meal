@@ -69,6 +69,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 	protected void onResume() {
 		super.onResume();
 		TFMenu menu = MealManager.instance().currentMenu();
+		if (menu == null)
+			return;
 		_tvMenuName.setText(menu.getName());
 		registerSensor();
 	}
@@ -82,6 +84,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 	}
 	
 	private void unregisterSensor() {
+		if (_sensorManager == null)
+			return;
 		_sensorManager.unregisterListener(this);
 	}
 	
